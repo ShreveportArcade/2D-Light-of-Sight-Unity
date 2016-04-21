@@ -11,10 +11,10 @@ namespace LOS {
 
 		// Cone Light
 		[Tooltip("The angle of the light cone. 0 means every direction.")]
-		public float coneAngle = 0;
+		[Range(0,360)] public float coneAngle = 0;
 
 		[Tooltip("The direction that the light is facing. Measured in degrees, counting from direction (1, 0)")]
-		public float faceAngle = 0;
+		[Range(0,360)] public float faceAngle = 0;
 
 		protected float _previousFaceAngle;
 		protected float _previousLightAngle;
@@ -39,11 +39,11 @@ namespace LOS {
 		public Color color = Color.yellow;
 		public Material material;
 		public int orderInLayer;
-		public int sortingLayer;
+		[SortingLayer] public string sortingLayerName = "Default";
 
 		protected Color _previousColor;
 		protected int _previousOrderInLayer;
-		protected int _previousSortingLayer;
+		protected string _previousSortingLayerName = "Default";
 
 
 		// Cache
@@ -181,7 +181,7 @@ namespace LOS {
 		}
 
 		private bool CheckSortingLayerDirty () {
-			return _previousSortingLayer != sortingLayer;
+			return _previousSortingLayerName != sortingLayerName;
 		}
 
 		private bool CheckRenderQueueDirty () {
@@ -343,8 +343,8 @@ namespace LOS {
 		}
 
 		protected void UpdateSortingLayer () {
-			GetComponent<Renderer>().sortingLayerID = sortingLayer;
-			_previousSortingLayer = sortingLayer;
+			GetComponent<Renderer>().sortingLayerName = sortingLayerName;
+			_previousSortingLayerName = sortingLayerName;
 		}
 
 		protected void UpdateSortingOrder () {
