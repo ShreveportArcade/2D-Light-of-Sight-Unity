@@ -4,6 +4,7 @@ using System.Collections;
 
 namespace LOS.Editor {
 	
+	[CanEditMultipleObjects]
 	[CustomEditor (typeof(LOSRadialLight))]
 	public class LOSRadialLightEditor : LOSLightBaseEditor {
 		protected SerializedProperty _radius;
@@ -12,6 +13,13 @@ namespace LOS.Editor {
 
 		private static float _previousTime;
 		
+		private LOSRadialLight light {
+			get { return target as LOSRadialLight; }
+		}
+
+		private LOSRadialLight[] lights {
+			get { return targets as LOSRadialLight[]; }
+		}
 
 		protected override void OnEnable () {
 			base.OnEnable ();
@@ -20,17 +28,15 @@ namespace LOS.Editor {
 			_flashFrequency = serializedObject.FindProperty("flashFrequency");
 			_flashOffset = serializedObject.FindProperty("flashOffset");
 
-			var light = (LOSRadialLight) target;
 			light.invertMode = false;
 
 			serializedObject.ApplyModifiedProperties();
 		}
 
-
-	
-
 		public override void OnInspectorGUI () {
 			base.OnInspectorGUI ();
+
+			EditorUtility.SetSelectedWireframeHidden(light.GetComponent<Renderer>(), true);
 
 			EditorGUILayout.PropertyField(_radius);
 
@@ -50,7 +56,6 @@ namespace LOS.Editor {
 
 			if (_flashFrequency.intValue > 0 && _flashOffset.floatValue > 0) {
 				EditorUtility.SetDirty(target);
-				var light = (LOSRadialLight) target;
 				light.timeFromLastFlash += Time.realtimeSinceStartup - _previousTime;
 				_previousTime = Time.realtimeSinceStartup;
 			}

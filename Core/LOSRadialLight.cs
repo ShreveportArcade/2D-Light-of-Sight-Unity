@@ -49,7 +49,6 @@ namespace LOS {
 		}
 
 		void Update () {
-			transform.rotation = Quaternion.identity;
 			if (flashFrequency > 0 && flashOffset > 0) {
 					_timeFromLastFlash += Time.deltaTime;
 

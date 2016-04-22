@@ -14,7 +14,15 @@ namespace LOS {
 		[Range(0,360)] public float coneAngle = 0;
 
 		[Tooltip("The direction that the light is facing. Measured in degrees, counting from direction (1, 0)")]
-		[Range(0,360)] public float faceAngle = 0;
+		[Range(0,360)] public float _faceAngle = 0;
+		public float faceAngle {
+			get {
+				return SMath.ClampDegree0To360(_faceAngle + transform.eulerAngles.z);
+			}
+			set {
+				_faceAngle = value;
+			}
+		}
 
 		protected float _previousFaceAngle;
 		protected float _previousLightAngle;

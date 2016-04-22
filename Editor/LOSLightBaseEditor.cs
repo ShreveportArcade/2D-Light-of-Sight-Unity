@@ -4,6 +4,7 @@ using System.Collections;
 
 namespace LOS.Editor {
 
+	[CanEditMultipleObjects]
 	[CustomEditor (typeof(LOSLightBase))]
 	public class LOSLightBaseEditor : UnityEditor.Editor {
 
@@ -17,18 +18,22 @@ namespace LOS.Editor {
 		protected SerializedProperty _orderInLayer;
 		protected SerializedProperty _sortingLayerName;
 
+		private LOSLightBase light {
+			get { return target as LOSLightBase; }
+		}
+
+		private LOSLightBase[] lights {
+			get { return targets as LOSLightBase[]; }
+		}
+
 		protected virtual void OnEnable () {
 			serializedObject.Update();
-
-			var light = (LOSLightBase) target;
-
-			EditorUtility.SetSelectedWireframeHidden(light.GetComponent<Renderer>(), !LOSManager.instance.debugMode);
 
 			_isStatic = serializedObject.FindProperty("isStatic");
 			_obstacleLayer = serializedObject.FindProperty("obstacleLayer");
 			_degreeStep = serializedObject.FindProperty("degreeStep");
 			_coneAngle = serializedObject.FindProperty("coneAngle");
-			_faceAngle = serializedObject.FindProperty("faceAngle");
+			_faceAngle = serializedObject.FindProperty("_faceAngle");
 			_color = serializedObject.FindProperty("color");
 			_sortingLayerName = serializedObject.FindProperty("sortingLayerName");
 			_orderInLayer = serializedObject.FindProperty("orderInLayer");
@@ -39,12 +44,13 @@ namespace LOS.Editor {
 		public override void OnInspectorGUI () {
 			serializedObject.Update();
 
+			EditorUtility.SetSelectedWireframeHidden(light.GetComponent<Renderer>(), true);
+
 			EditorGUILayout.PropertyField(_isStatic);
 
 			EditorGUILayout.Space();
 			EditorGUILayout.PropertyField(_obstacleLayer);
-			EditorGUILayout.Slider(_degreeStep, 0.1f, 2f);
-//			EditorGUILayout.PropertyField(_degreeStep);
+			EditorGUILayout.PropertyField(_degreeStep);
 			EditorGUILayout.PropertyField(_coneAngle);
 			if (_coneAngle.floatValue != 0) {
 				EditorGUILayout.PropertyField(_faceAngle);
