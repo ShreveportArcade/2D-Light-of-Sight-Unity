@@ -32,7 +32,10 @@ namespace LOS {
 
 		// Light Settings
 		[Tooltip("The precision of the light collision test. Measured in degrees.")]
-		public float degreeStep = 0.2f;
+		[Range(0.2f, 45)] public float _degreeStep = 5;
+		public float degreeStep {
+			get { return Mathf.Max(0.2f, _degreeStep); }
+		}
 
 		[Tooltip("Draws the light in invert mode or not.")]
 		public bool invertMode = false;

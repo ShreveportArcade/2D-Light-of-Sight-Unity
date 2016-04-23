@@ -31,7 +31,7 @@ namespace LOS.Editor {
 
 			_isStatic = serializedObject.FindProperty("isStatic");
 			_obstacleLayer = serializedObject.FindProperty("obstacleLayer");
-			_degreeStep = serializedObject.FindProperty("degreeStep");
+			_degreeStep = serializedObject.FindProperty("_degreeStep");
 			_coneAngle = serializedObject.FindProperty("coneAngle");
 			_faceAngle = serializedObject.FindProperty("_faceAngle");
 			_color = serializedObject.FindProperty("color");
